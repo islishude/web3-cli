@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 	"math/big"
 	"os"
@@ -14,7 +13,7 @@ import (
 	"github.com/ethereum/go-ethereum/rpc"
 )
 
-const helpText = "web3-cli - jsonrpc command line interface\n\nUsage: web3-cli method [param...]"
+const helpText = "web3-cli - web3 jsonrpc client tools\n\nUsage: web3-cli method [param...]\n\nDefault web3 server endpoint is `http://locahost:8545`,you\ncan set `web3` env value to change it."
 
 func main() {
 	log.SetFlags(0)
@@ -40,14 +39,14 @@ func main() {
 				if v, ok := new(big.Int).SetString(p, 10); ok {
 					params = append(params, "0x"+v.Text(16))
 				} else {
-					log.Printf("value %s should convert to number\n", p)
+					log.Printf("value %q should be converted to number\n", p)
 					return
 				}
 			case p == "true" || p == "false":
 				if v, err := strconv.ParseBool(p); err == nil {
 					params = append(params, v)
 				} else {
-					log.Printf("value %s should convert to bool\n", p)
+					log.Printf("value %q should be converted to bool\n", p)
 					return
 				}
 			default:
@@ -58,7 +57,7 @@ func main() {
 
 	endpoint := os.Getenv("web3")
 	if endpoint == "" {
-		fmt.Println("no env setted,use default localhost web3 server")
+		log.Println("no web3 env setted,use default localhost")
 		endpoint = "http://127.0.0.1:8545"
 	}
 
@@ -72,14 +71,13 @@ func main() {
 	}
 	defer ethclient.Close()
 
-	log.Printf("Calling %s with %v", method, params)
 	var result interface{}
 	if err := ethclient.CallContext(ctx, &result, method, params...); err != nil {
-		log.Printf("Call failed: %s\n", err)
+		log.Printf("call %s failed with %v: %s\n", method, params, err)
 		return
 	}
 
-	encoding := json.NewEncoder(os.Stdout)
-	encoding.SetIndent("", "  ")
-	_ = encoding.Encode(result)
+	out := json.NewEncoder(os.Stdout)
+	out.SetIndent("", "  ")
+	_ = out.Encode(result)
 }

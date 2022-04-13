@@ -16,8 +16,6 @@ import (
 const helpText = "web3-cli - web3 jsonrpc client tools\n\nUsage: web3-cli method [param...]\n\nDefault web3 server endpoint is `http://locahost:8545`,you\ncan set `web3` env value to change it."
 
 func main() {
-	log.SetFlags(0)
-
 	var method string
 	var params []interface{}
 
@@ -39,14 +37,14 @@ func main() {
 				if v, ok := new(big.Int).SetString(p, 10); ok {
 					params = append(params, "0x"+v.Text(16))
 				} else {
-					log.Printf("value %q should be converted to number\n", p)
+					log.Printf("could not be converted %q to number\n", p)
 					return
 				}
 			case p == "true" || p == "false":
 				if v, err := strconv.ParseBool(p); err == nil {
 					params = append(params, v)
 				} else {
-					log.Printf("value %q should be converted to bool\n", p)
+					log.Printf("could not be converted %q to bool\n", p)
 					return
 				}
 			default:
@@ -57,7 +55,7 @@ func main() {
 
 	endpoint := os.Getenv("web3")
 	if endpoint == "" {
-		log.Println("no web3 env setted,use default localhost")
+		log.Println("Using default localhost rpc endpoint")
 		endpoint = "http://127.0.0.1:8545"
 	}
 
@@ -73,7 +71,7 @@ func main() {
 
 	var result interface{}
 	if err := ethclient.CallContext(ctx, &result, method, params...); err != nil {
-		log.Printf("call %s failed with %v: %s\n", method, params, err)
+		log.Printf("Call %s failed with params %v: %s\n", method, params, err)
 		return
 	}
 

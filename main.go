@@ -13,7 +13,7 @@ import (
 	"github.com/ethereum/go-ethereum/rpc"
 )
 
-const helpText = "web3-cli - web3 jsonrpc client tools\n\nUsage: web3-cli method [param...]\n\nDefault web3 server endpoint is `http://locahost:8545`,you\ncan set `web3` env value to change it."
+const helpText = "web3-cli - web3 jsonrpc client tools\n\nUsage: web3-cli method [param...]\n\nDefault web3 server endpoint is `http://localhost:8545`, you can set `web3` env value to change it."
 
 func main() {
 	var method string

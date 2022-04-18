@@ -11,7 +11,7 @@ go install github.com/islishude/web3-cli@latest
 **Usage**
 
 ```console
-$ expose web3=https://rpc.ankr.com/arbitrum
+$ export web3=https://rpc.ankr.com/arbitrum
 $ web3-cli eth_getBlockByNumber 2350244 false
 {
   "number": "0x23dca4",

@@ -69,7 +69,7 @@ func main() {
 	}
 	defer ethclient.Close()
 
-	var result interface{}
+	var result json.RawMessage
 	if err := ethclient.CallContext(ctx, &result, method, params...); err != nil {
 		log.Printf("Call %s failed with params %v: %s\n", method, params, err)
 		return

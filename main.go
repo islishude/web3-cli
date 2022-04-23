@@ -9,6 +9,7 @@ import (
 	"regexp"
 	"time"
 
+	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/rpc"
 )
 
@@ -65,7 +66,7 @@ func main() {
 	defer ethclient.Close()
 
 	var result json.RawMessage
-	if err := ethclient.CallContext(ctx, &result, method, params...); err != nil {
+	if err := ethclient.CallContext(ctx, &result, method, params...); err != nil && err != ethereum.NotFound {
 		log.Printf("Call %s failed with params %v: %s\n", method, params, err)
 		return
 	}

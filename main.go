@@ -7,7 +7,6 @@ import (
 	"math/big"
 	"os"
 	"regexp"
-	"strconv"
 	"time"
 
 	"github.com/ethereum/go-ethereum/rpc"
@@ -37,16 +36,12 @@ func main() {
 				if v, ok := new(big.Int).SetString(p, 10); ok {
 					params = append(params, "0x"+v.Text(16))
 				} else {
-					log.Printf("could not be converted %q to number\n", p)
-					return
+					params = append(params, p)
 				}
-			case p == "true" || p == "false":
-				if v, err := strconv.ParseBool(p); err == nil {
-					params = append(params, v)
-				} else {
-					log.Printf("could not be converted %q to bool\n", p)
-					return
-				}
+			case p == "true":
+				params = append(params, true)
+			case p == "false":
+				params = append(params, false)
 			default:
 				params = append(params, p)
 			}

@@ -11,6 +11,7 @@ on:
 
 jobs:
   main:
+    concurrency: "build"
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU

@@ -2,7 +2,7 @@ module github.com/islishude/web3-cli
 
 go 1.18
 
-require github.com/ethereum/go-ethereum v1.10.18
+require github.com/ethereum/go-ethereum v1.10.20
 
 require (
 	github.com/btcsuite/btcd/btcec/v2 v2.2.0 // indirect

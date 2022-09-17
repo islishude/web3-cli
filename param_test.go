@@ -13,7 +13,7 @@ func Test_parseArgs(t *testing.T) {
 		wantErr bool
 	}{
 		{"null", []string{"null"}, []interface{}{nil}, false},
-		{"invalid json", []string{`{"name":invalid}`}, []interface{}{nil}, true},
+		{"invalid json", []string{`{"name":invalid}`}, nil, true},
 		{"eth_getBlockByNumber", []string{"100", "true"}, []interface{}{"0x64", true}, false},
 		{"eth_getBlockByNumber_2", []string{"latest", "false"}, []interface{}{"latest", false}, false},
 		{"eth_eastimateGas", []string{`{"from": "1","to": "2"}`, "latest"}, []interface{}{map[string]interface{}{"from": "1", "to": "2"}, "latest"}, false},

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/big"
 	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -18,10 +19,11 @@ func parseArgs(args []string) ([]interface{}, error) {
 				continue
 			}
 			fallthrough
-		case p == "true":
-			params = append(params, true)
-		case p == "false":
-			params = append(params, false)
+		case p == "false", p == "true":
+			v, _ := strconv.ParseBool(p)
+			params = append(params, v)
+		case p == "null":
+			params = append(params, nil)
 		case strings.HasPrefix(p, "["), strings.HasPrefix(p, "{"):
 			var raw interface{}
 			if err := json.Unmarshal([]byte(p), &raw); err != nil {

@@ -27,6 +27,7 @@ jobs:
         id: docker_build
         if: ${{ github.ref_type == 'branch' }}
         uses: docker/build-push-action@v3
+        timeout-minutes: 10
         with:
           push: true
           platforms: linux/amd64,linux/arm64
@@ -37,6 +38,9 @@ jobs:
         id: docker_build_with_tag
         if: ${{ github.ref_type == 'tag' }}
         uses: docker/build-push-action@v3
+        timeout-minutes: 10
         with:
           push: true
           tags: islishude/web3-cli:${{ github.ref_name }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

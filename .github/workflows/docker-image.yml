@@ -23,24 +23,16 @@ jobs:
         with:
           username: islishude
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Docker meta
+        id: docker-meta
+        uses: docker/metadata-action@v4
+        with:
+          images: islishude/web3-cli
       - name: Build and push
-        id: docker_build
-        if: ${{ github.ref_type == 'branch' }}
         uses: docker/build-push-action@v3
         timeout-minutes: 10
         with:
-          push: true
-          platforms: linux/amd64,linux/arm64
-          tags: islishude/web3-cli:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      - name: Build with tag and push
-        id: docker_build_with_tag
-        if: ${{ github.ref_type == 'tag' }}
-        uses: docker/build-push-action@v3
-        timeout-minutes: 10
-        with:
-          push: true
-          tags: islishude/web3-cli:${{ github.ref_name }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.docker-meta.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

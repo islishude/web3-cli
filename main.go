@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"log"
 	"os"
-	"time"
 
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/rpc"
@@ -41,9 +40,7 @@ func main() {
 		endpoint = "http://127.0.0.1:8545"
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
-	defer cancel()
-
+	ctx := context.Background()
 	ethclient, err := rpc.DialContext(ctx, endpoint)
 	if err != nil {
 		log.Fatalf("can't connect to web3 server %q: %s\n", endpoint, err)

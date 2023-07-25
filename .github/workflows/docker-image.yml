@@ -13,7 +13,16 @@ jobs:
   main:
     concurrency: "build"
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Install cosign
+        if: github.event_name != 'pull_request'
+        uses: sigstore/cosign-installer@v3
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -21,18 +30,27 @@ jobs:
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
-          username: islishude
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Docker meta
         id: docker-meta
         uses: docker/metadata-action@v4
         with:
-          images: islishude/web3-cli
+          images: ghcr.io/islishude/web3-cli
       - name: Build and push
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
+        id: docker-build
         timeout-minutes: 10
         with:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.docker-meta.outputs.tags }}
+          labels: ${{ steps.docker-meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      - name: Sign the published Docker image
+        if: ${{ github.event_name != 'pull_request' }}
+        env:
+          TAGS: ${{ steps.docker-meta.outputs.tags }}
+          DIGEST: ${{ steps.docker-build.outputs.digest }}
+        run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}

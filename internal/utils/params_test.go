@@ -1,11 +1,11 @@
-package main
+package utils
 
 import (
 	"reflect"
 	"testing"
 )
 
-func Test_parseArgs(t *testing.T) {
+func TestParseArgs(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    []string
@@ -21,7 +21,7 @@ func Test_parseArgs(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := parseArgs(tt.args)
+			got, err := ParseArgs(tt.args)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("parseArgs() error = %v, wantErr %v", err, tt.wantErr)
 				return

@@ -1,19 +1,18 @@
-package main
+package utils
 
 import (
 	"encoding/json"
 	"fmt"
 	"math/big"
-	"regexp"
+	"os"
 	"strconv"
 	"strings"
 )
 
-func parseArgs(args []string) ([]interface{}, error) {
-	var params []interface{}
+func ParseArgs(args []string) (params []interface{}, err error) {
 	for _, p := range args {
 		switch {
-		case regexp.MustCompile(`^[0-9]+$`).MatchString(p):
+		case IsNumber(p):
 			if v, ok := new(big.Int).SetString(p, 10); ok {
 				params = append(params, "0x"+v.Text(16))
 				continue
@@ -35,4 +34,12 @@ func parseArgs(args []string) ([]interface{}, error) {
 		}
 	}
 	return params, nil
+}
+
+func PrintJson(data any, pretty bool) error {
+	jsonEncoder := json.NewEncoder(os.Stdout)
+	if pretty {
+		jsonEncoder.SetIndent("", "    ")
+	}
+	return jsonEncoder.Encode(data)
 }

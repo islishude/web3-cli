@@ -13,14 +13,14 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-//go:embed doc.md
-var usageTxt string
+//go:embed brief.md
+var briefDoc string
 
 func main() {
 	app := &cli.App{
 		Name:        "web3-cli",
 		Usage:       "web3 jsonrpc client",
-		Description: usageTxt,
+		Description: briefDoc,
 		Flags: []cli.Flag{
 			ChainNameFlag,
 			RPCFlag,
@@ -38,14 +38,14 @@ func main() {
 				Name:        "chains",
 				Description: "display builtin chain config",
 				Action: func(ctx *cli.Context) error {
-					return utils.PrintJson(chains.Buintin, true)
+					return utils.PrintJson(os.Stdout, chains.Buintin, true)
 				},
 			},
 			{
 				Name:        "abis",
 				Description: "display builtin contracts ABI",
 				Action: func(ctx *cli.Context) error {
-					return utils.PrintJson(abis.Builtin(), true)
+					return utils.PrintJson(os.Stdout, abis.Builtin(), true)
 				},
 			},
 		},

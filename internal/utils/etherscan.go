@@ -5,7 +5,7 @@ import (
 	"net/url"
 )
 
-func URLForExpABI(base, contAddr, key string) (string, error) {
+func URLToGetABI(base, contAddr, key string) (string, error) {
 	got, err := url.Parse(base)
 	if err != nil {
 		return "", err

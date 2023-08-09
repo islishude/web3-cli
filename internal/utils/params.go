@@ -3,8 +3,8 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"math/big"
-	"os"
 	"strconv"
 	"strings"
 )
@@ -36,8 +36,8 @@ func ParseArgs(args []string) (params []interface{}, err error) {
 	return params, nil
 }
 
-func PrintJson(data any, pretty bool) error {
-	jsonEncoder := json.NewEncoder(os.Stdout)
+func PrintJson(w io.Writer, data any, pretty bool) error {
+	jsonEncoder := json.NewEncoder(w)
 	if pretty {
 		jsonEncoder.SetIndent("", "    ")
 	}

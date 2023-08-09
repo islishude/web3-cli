@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestURLForExpABI(t *testing.T) {
+func TestURLToGetABI(t *testing.T) {
 	type args struct {
 		base     string
 		contAddr string
@@ -26,7 +26,7 @@ func TestURLForExpABI(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := URLForExpABI(tt.args.base, tt.args.contAddr, tt.args.key)
+			got, err := URLToGetABI(tt.args.base, tt.args.contAddr, tt.args.key)
 			if hasErr := err != nil; hasErr {
 				if hasErr != tt.wantErr {
 					t.Errorf("URLForExpABI() error = %v, wantErr %v", err, tt.wantErr)

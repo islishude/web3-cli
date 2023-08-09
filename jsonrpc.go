@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"os"
 
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/rpc"
@@ -22,5 +23,5 @@ func JsonrpcCall(ctx *cli.Context, rpcClient *rpc.Client) error {
 		jsonrpcMethod, jsonrpcParams...); err != nil && err != ethereum.NotFound {
 		return err
 	}
-	return utils.PrintJson(result, true)
+	return utils.PrintJson(os.Stdout, result, true)
 }

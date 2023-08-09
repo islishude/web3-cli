@@ -1,9 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 
-	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/islishude/bigint"
 	"github.com/islishude/web3-cli/internal/utils"
 	"github.com/urfave/cli/v2"
 )
@@ -71,17 +72,11 @@ var (
 		Usage:   "gas limit for contract call",
 		EnvVars: []string{"WEB3_CLI_CONTRACT_CALL_GAS"},
 		Action: func(ctx *cli.Context, s string) error {
-			if utils.IsNumber(s) {
-				return nil
+			var v bigint.Int
+			if err := json.Unmarshal([]byte(s), &v); err != nil {
+				return fmt.Errorf("invalid call-gas number: %s", s)
 			}
-			if utils.IsHex(s) {
-				v, err := hexutil.DecodeBig(s)
-				if err != nil {
-					return err
-				}
-				return ctx.Set("call-gas", v.String())
-			}
-			return fmt.Errorf("invalid GAS: %s", s)
+			return ctx.Set("call-gas", v.ToInt().String())
 		},
 	}
 

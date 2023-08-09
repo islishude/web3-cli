@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -12,8 +13,16 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+type CallMsg struct {
+	From  string        `json:"from"`
+	To    string        `json:"to"`
+	Data  hexutil.Bytes `json:"data,omitempty"`
+	Value *hexutil.Big  `json:"value,omitempty"`
+	Gas   hexutil.Uint  `json:"gas,omitempty"`
+}
+
 func ContractCall(ctx *cli.Context, rpcClient *rpc.Client, chain *chains.Chain) (err error) {
-	callMsg := utils.CallMsg{
+	callMsg := CallMsg{
 		From: ctx.String(EthCallFromFlag.Name),
 		To:   ctx.String(EthCallToFlag.Name),
 	}
@@ -31,7 +40,7 @@ func ContractCall(ctx *cli.Context, rpcClient *rpc.Client, chain *chains.Chain) 
 		return err
 	}
 
-	callMsg.Data, err = utils.ABIMethodPack(abiIns, ctx.Args().Slice())
+	callMsg.Data, err = abis.Pack(abiIns, ctx.Args().Slice())
 	if err != nil {
 		return err
 	}
@@ -43,7 +52,8 @@ func ContractCall(ctx *cli.Context, rpcClient *rpc.Client, chain *chains.Chain) 
 		return err
 	}
 
-	if len(output) == 0 {
+	methodIns := abiIns.Methods[ctx.Args().First()]
+	if len(methodIns.Outputs) > 0 && len(output) == 0 {
 		jsonrpcParam[0] = callMsg.To
 		if err = rpcClient.CallContext(ctx.Context, &output, "eth_getCode", jsonrpcParam...); err != nil {
 			return err
@@ -54,12 +64,12 @@ func ContractCall(ctx *cli.Context, rpcClient *rpc.Client, chain *chains.Chain) 
 		}
 	}
 
-	result, err := utils.ABIMethodUnpack(abiIns, ctx.Args().First(), output)
+	result, err := abis.Unpack(abiIns, ctx.Args().First(), output)
 	if err != nil {
 		return err
 	}
 
-	return utils.PrintJson(result, true)
+	return utils.PrintJson(os.Stdout, result, true)
 }
 
 func getABI(ctx *cli.Context, chain *chains.Chain, contAddr string) (*abi.ABI, error) {
@@ -71,7 +81,7 @@ func getABI(ctx *cli.Context, chain *chains.Chain, contAddr string) (*abi.ABI, e
 	// you can always overwrite builtin ABI
 	fetchURL, isExplorer := ctx.String(ABIPathFlag.Name), false
 	if fetchURL == "" {
-		expURL, err := utils.URLForExpABI(chain.Explorer, contAddr, ctx.String(ExplorerApiKeyFlag.Name))
+		expURL, err := utils.URLToGetABI(chain.Explorer, contAddr, ctx.String(ExplorerApiKeyFlag.Name))
 		if err != nil {
 			return nil, err
 		}

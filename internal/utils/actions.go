@@ -1,12 +1,13 @@
 package utils
 
 import (
+	"encoding/json"
 	"fmt"
-	"math/big"
 	"strconv"
 	"strings"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/islishude/bigint"
 	"github.com/urfave/cli/v2"
 )
 
@@ -28,40 +29,17 @@ func EthCallHeightFlagAction(ctx *cli.Context, s string) error {
 	case "safe", "finalized", "latest", "earliest", "pending":
 		return nil
 	default:
-		switch {
-		case IsHex(s):
-			v, err := hexutil.DecodeBig(s)
-			if err != nil {
-				return err
-			}
-			return ctx.Set(flagName, (*hexutil.Big)(v).String())
-		case IsNumber(s):
-			v, ok := new(big.Int).SetString(s, 10)
-			if ok {
-				return fmt.Errorf("invalid decimal number: %s", s)
-			}
-			return ctx.Set(flagName, (*hexutil.Big)(v).String())
-		default:
-			return fmt.Errorf("invalid height value: %s", s)
+		var v bigint.Int
+		if err := json.Unmarshal([]byte(s), &v); err != nil {
+			return fmt.Errorf("invalid decimal number: %s", s)
 		}
+		return ctx.Set(flagName, v.ToInt().String())
 	}
 }
 
 func EthCallValueFlagAction(ctx *cli.Context, s string) error {
 	const flagName = "call-value"
 	switch {
-	case IsHex(s):
-		v, err := hexutil.DecodeBig(s)
-		if err != nil {
-			return err
-		}
-		return ctx.Set(flagName, (*hexutil.Big)(v).String())
-	case IsNumber(s):
-		v, ok := new(big.Int).SetString(s, 10)
-		if ok {
-			return fmt.Errorf("invalid decimal number: %s", s)
-		}
-		return ctx.Set(flagName, (*hexutil.Big)(v).String())
 	case strings.HasSuffix(s, "eth"):
 		v, err := strconv.ParseFloat(strings.TrimLeft(s, "eth"), 64)
 		if err != nil {
@@ -75,6 +53,10 @@ func EthCallValueFlagAction(ctx *cli.Context, s string) error {
 		}
 		return ctx.Set(flagName, (*hexutil.Big)(ToGWei(v)).String())
 	default:
-		return fmt.Errorf("invalid value: %s", s)
+		var v bigint.Int
+		if err := json.Unmarshal([]byte(s), &v); err != nil {
+			return fmt.Errorf("invalid decimal number: %s", s)
+		}
+		return ctx.Set(flagName, v.ToInt().String())
 	}
 }

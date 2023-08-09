@@ -8,7 +8,7 @@ func IsAddress(v string) bool {
 	return addregexp.MatchString(v)
 }
 
-var numberRx = regexp.MustCompile(`^[0-9]+$`)
+var numberRx = regexp.MustCompile(`^(-)?[0-9]+$`)
 
 func IsNumber(p string) bool {
 	return numberRx.MatchString(p)

@@ -4,7 +4,6 @@ go 1.20
 
 require (
 	github.com/ethereum/go-ethereum v1.12.0
-	github.com/islishude/bigint v1.3.3
 	github.com/urfave/cli/v2 v2.25.7
 )
 

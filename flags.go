@@ -1,10 +1,8 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 
-	"github.com/islishude/bigint"
 	"github.com/islishude/web3-cli/internal/utils"
 	"github.com/urfave/cli/v2"
 )
@@ -72,11 +70,10 @@ var (
 		Usage:   "gas limit for contract call",
 		EnvVars: []string{"WEB3_CLI_CONTRACT_CALL_GAS"},
 		Action: func(ctx *cli.Context, s string) error {
-			var v bigint.Int
-			if err := json.Unmarshal([]byte(s), &v); err != nil {
-				return fmt.Errorf("invalid call-gas number: %s", s)
+			if v := utils.ToBigInt(s); v != nil {
+				return ctx.Set("call-gas", v.String())
 			}
-			return ctx.Set("call-gas", v.ToInt().String())
+			return fmt.Errorf("invalid number: %s", s)
 		},
 	}
 

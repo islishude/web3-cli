@@ -7,12 +7,10 @@ import (
 	"fmt"
 	"reflect"
 	"strconv"
-	"strings"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/islishude/bigint"
 	"github.com/islishude/web3-cli/internal/utils"
 )
 
@@ -170,14 +168,6 @@ func nonDynamicEncode(abiArg *abi.Type, arg any) (any, error) {
 	switch v := arg.(type) {
 	case string:
 		rawArg = v
-		if abiArg.T == abi.IntTy || abiArg.T == abi.UintTy {
-			if !strings.HasPrefix(rawArg, `"`) {
-				rawArg = `"` + rawArg
-			}
-			if !strings.HasSuffix(rawArg, `"`) {
-				rawArg = rawArg + `"`
-			}
-		}
 	case json.RawMessage:
 		if abiArg.T != abi.IntTy && abiArg.T != abi.UintTy {
 			v = bytes.TrimLeft(v, `"`)
@@ -188,12 +178,11 @@ func nonDynamicEncode(abiArg *abi.Type, arg any) (any, error) {
 
 	switch abiArg.T {
 	case abi.IntTy, abi.UintTy:
-		var i bigint.Int
-		if err := json.Unmarshal([]byte(rawArg), &i); err != nil {
-			return nil, fmt.Errorf("param %s should be a valid number type: %s", arg, err)
+		val := utils.ToBigInt(rawArg)
+		if val == nil {
+			return nil, fmt.Errorf("invalid number: %s", rawArg)
 		}
 
-		val := i.ToInt()
 		if abiArg.T == abi.IntTy {
 			switch abiArg.Size {
 			case 8:
@@ -205,7 +194,7 @@ func nonDynamicEncode(abiArg *abi.Type, arg any) (any, error) {
 			case 64:
 				return val.Int64(), nil
 			}
-			return i.ToInt(), nil
+			return val, nil
 		}
 
 		switch abiArg.Size {
@@ -218,7 +207,7 @@ func nonDynamicEncode(abiArg *abi.Type, arg any) (any, error) {
 		case 64:
 			return val.Uint64(), nil
 		}
-		return i.ToInt(), nil
+		return val, nil
 	case abi.BoolTy:
 		val, err := strconv.ParseBool(rawArg)
 		if err != nil {

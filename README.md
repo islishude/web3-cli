@@ -5,7 +5,7 @@
 **Install**
 
 ```
-go install github.com/islishude/web3-cli@latest
+go install github.com/islishude/web3-cli@main
 ```
 
 **Usage**
@@ -38,4 +38,14 @@ $ web3-cli eth_getBlockByNumber 2350244 false
   "uncles": [],
   "l1BlockNumber": "0xcd2941"
 }
+$ export USDT_ADDRESS=0xdac17f958d2ee523a2206206994597c13d831ec7
+$ web3-cli --chain eth --abi-name erc20 --call-to $USDT_ADDRESS symbol
+[
+    "USDT"
+]
+# fetch abi from explorer
+$ web3-cli --chain eth --call-to $USDT_ADDRESS getOwner
+[
+    "0xc6cde7c39eb2f0f0095f41570af89efc2c1ea828"
+]
 ```

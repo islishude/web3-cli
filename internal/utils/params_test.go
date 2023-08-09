@@ -1,11 +1,13 @@
-package main
+package utils
 
 import (
+	"bytes"
+	"fmt"
 	"reflect"
 	"testing"
 )
 
-func Test_parseArgs(t *testing.T) {
+func TestParseArgs(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    []string
@@ -21,13 +23,51 @@ func Test_parseArgs(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := parseArgs(tt.args)
+			got, err := ParseArgs(tt.args)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("parseArgs() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("parseArgs() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestPrintJson(t *testing.T) {
+	type args struct {
+		data   any
+		pretty bool
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantW   string
+		wantErr bool
+	}{
+		{
+			"general",
+			args{map[string]int{"a": 1}, false},
+			fmt.Sprintln(`{"a":1}`),
+			false,
+		},
+		{
+			"pretty",
+			args{map[string]int{"a": 1}, true},
+			fmt.Sprintf(`{%s    "a": 1%s}%s`, "\n", "\n", "\n"),
+			false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			w := &bytes.Buffer{}
+			if err := PrintJson(w, tt.args.data, tt.args.pretty); (err != nil) != tt.wantErr {
+				t.Errorf("PrintJson() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if gotW := w.String(); gotW != tt.wantW {
+				t.Errorf("PrintJson() = %v, want %v", gotW, tt.wantW)
 			}
 		})
 	}

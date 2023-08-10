@@ -16,7 +16,7 @@ func ToBigInt(s string) *big.Int {
 	// trim quotation mark
 	s = strings.Trim(s, `"`)
 
-	// no negtive number
+	// no negative number
 	if strings.HasPrefix(s, "-") {
 		return nil
 	}

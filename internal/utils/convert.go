@@ -16,12 +16,18 @@ func ToBigInt(s string) *big.Int {
 	// trim quotation mark
 	s = strings.Trim(s, `"`)
 
-	isNeg := strings.HasPrefix(s, "-")
-	if isNeg {
+	// no negtive number
+	if strings.HasPrefix(s, "-") {
 		return nil
 	}
 
-	s = strings.ToLower(s)
+	// no decimals
+	if strings.ContainsRune(s, '.') {
+		return nil
+	}
+
+	// remove underscores and convert to lower case
+	s = strings.Join(strings.Split(strings.ToLower(s), "_"), "")
 	if strings.HasPrefix(s, "0x") {
 		s = strings.TrimPrefix(s, "0x")
 		i, _ := new(big.Int).SetString(s, 16)

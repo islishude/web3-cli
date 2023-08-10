@@ -19,6 +19,8 @@ func TestToBigInt(t *testing.T) {
 		{`1e4`, args{"1e4"}, big.NewInt(1e4)},
 		{`1e18`, args{"1e18"}, big.NewInt(1e18)},
 		{`1`, args{"1"}, big.NewInt(1)},
+		{`1.04`, args{"1.04"}, nil},
+		{`10_000`, args{"10_000"}, big.NewInt(1e4)},
 		{`-1`, args{`"-1"`}, nil},
 		{`0x1`, args{`0x1`}, big.NewInt(1)},
 		{`0b1`, args{`0b1`}, big.NewInt(1)},

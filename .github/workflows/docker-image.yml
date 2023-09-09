@@ -1,4 +1,4 @@
-name: ci
+name: docker
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
       - "v*.*.*"
 
 jobs:
-  main:
+  docker-build-push:
     concurrency: "build"
     runs-on: ubuntu-latest
     permissions:

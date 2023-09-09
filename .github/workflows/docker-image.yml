@@ -18,8 +18,8 @@ jobs:
       packages: write
       id-token: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Install cosign
         if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
         uses: sigstore/cosign-installer@v3

@@ -4,8 +4,19 @@
 
 ## Install
 
+Install with docker
+
 ```
 docker pull ghcr.io/islishude/web3-cli
+```
+
+or if you have golang installed
+
+```sh
+# install with the laest tag
+go install github.com/islishude/web3-cli@latest
+# install with the latest commit
+go install github.com/islishude/web3-cli@main
 ```
 
 ## Usage
@@ -70,9 +81,14 @@ $ web3-cli --rpc https://rpc.ankr.com/arbitrum eth_chainId
 **Call a contract with human-readable params**
 
 ```console
-$ web3-cli --chain eth --abi-name erc20 --call-to 0xdac17f958d2ee523a2206206994597c13d831ec7 symbol
+$ export USDT_TOKEN=0xdac17f958d2ee523a2206206994597c13d831ec7
+$ web3-cli --chain eth --abi-name erc20 --call-to $USDT_TOKEN symbol
 [
     "USDT"
+]
+$ web3-cli --chain eth --call-to $USDT_TOKEN balanceOf 0x0000000000000000000000000000000000000000
+[
+    10123456
 ]
 ```
 
@@ -85,10 +101,10 @@ $ web3-cli --chain eth --abi-name https://http-server/abi/abi.json
 $ web3-cli --chain eth --abi-name local/path/to/abi.json
 ```
 
-one more, it can fetch abi from explorer api automatically
+one more, if you don't provide `--abi-name`, web3-cli can fetch the abi from explorer api automatically
 
 ```
-$ web3-cli --chain eth --call-to $USDT_ADDRESS getOwner
+$ web3-cli --chain eth --call-to $USDT_TOKEN getOwner
 [
     "0xc6cde7c39eb2f0f0095f41570af89efc2c1ea828"
 ]
@@ -101,3 +117,83 @@ $ # not required if use a built-in chain
 $ web3-cli --chain eth --rpc https://my-own-rpc.com
 $ web3-cli --rpc https://my-own-rpc.com --explorer-api https://my-custom-explorer.com/api
 ```
+
+What about a complex abi type parameter, like array and tuple?
+
+**bytes**
+
+```solidity
+    function logbyt(bytes memory _log) public returns (bytes memory log){
+        counter++;
+        return _log;
+    }
+```
+
+you must use a hex string
+
+```json
+0x776562332d636c6920697320736f20636f6f6c21
+```
+
+**array and slice**
+
+```solidity
+    function add(uint256[] calldata items) public pure returns (uint256 sum) {
+        for (uint256 i = 0; i < items.length; i++){
+            sum += items[i];
+        }
+    }
+```
+
+json array is valid
+
+```json
+["0x1", 100]
+```
+
+**tuple(struct)**
+
+```solidity
+    struct Payment {
+        address payable to;
+        uint256 value;
+    }
+
+    function transfer(Payment calldata item) external payable returns (bool success) {
+       return item.to.send(msg.value);
+    }
+```
+
+json array is valid (you can use it in Remix)
+
+```json
+["0x0000000000000000000000000000000000000000", "0x1"]
+```
+
+json object is valid as well!
+
+```json
+{ "address": "0x0000000000000000000000000000000000000000", "value": "0x1" }
+```
+
+## Contribute
+
+**How to add your chain to built-in list?**
+
+Add it to `internal/chains/list.go` file.
+
+for example:
+
+```go
+var eth = &Chain{
+	Name:     "eth",
+	Id:       1,
+	Endpoint: "https://cloudflare-eth.com",
+	Explorer: "https://api.etherscan.io/api",
+	Alias:    []string{"eth-mainnet", "mainnet"},
+}
+```
+
+**How to add an ABI to built-in list?**
+
+Add a valid json file to `internal/abis/abi` directory.

@@ -1,51 +1,103 @@
 # WEB3-CLI
 
-![ci](https://github.com/islishude/web3-cli/workflows/ci/badge.svg?branch=main)
+[![test](https://github.com/islishude/web3-cli/actions/workflows/test.yaml/badge.svg)](https://github.com/islishude/web3-cli/actions/workflows/test.yaml)
 
-**Install**
+## Install
 
 ```
-go install github.com/islishude/web3-cli@main
+docker pull ghcr.io/islishude/web3-cli
 ```
 
-**Usage**
+## Usage
+
+**Do a simple jsonrpc call**
+
+the default rpc endpoint is your local: `http://localhost:8545`
+
+your command is like `web3-cli jsonrpc_method [jsonrpc_param...]`
 
 ```console
-$ export web3=https://rpc.ankr.com/arbitrum
-$ web3-cli eth_getBlockByNumber 2350244 false
+$ web3-cli web3_clientVersion
+"Geth/v1.12.1-unstable-60070fe5-20230805/darwin-amd64/go1.20.7"
+$ web3-cli eth_getBlockByNumber 1 false
 {
-  "number": "0x23dca4",
-  "hash": "0xd03f19a4d4f2de14987ba483a2d5bd382e023370ca4c93b262ae3116970de93f",
-  "parentHash": "0x2d22be9229d42194b5984de170f50909e8f4cd143088f14a8bf6a720c0411073",
-  "mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
-  "nonce": "0x0000000000000000",
-  "sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
-  "logsBloom": "0x00000000000000000000000200000000000000000400000000000000000400000000000000000000000100000000000008000000000000000000000000000000000000002000000000000008000000000000000000000000000000000000000000000000020000000000000000000800000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004000000000000000000000000008000000000000000002000000000000000008000000000000000000000000000000000020000000000000010000010000000000000000000000400000801008000000000000",
-  "transactionsRoot": "0x055d6a8d58ba93efee3bfac133c50c982918d79ff39c50211228b5c97621293b",
-  "stateRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
-  "receiptsRoot": "0x0802ec902a1558981da3a5e2ab7c33be5ce22ebec649bda868e1f93bf93cb5af",
-  "miner": "0x0000000000000000000000000000000000000000",
-  "difficulty": "0x0",
-  "totalDifficulty": "0x0",
-  "extraData": "0x",
-  "size": "0x0",
-  "gasLimit": "0x36a5e9b",
-  "gasUsed": "0x69696",
-  "timestamp": "0x616e290f",
-  "transactions": [
-    "0xc990aa62e9af9136cf128fef5eee067ebcb5eed03fbf872c60a543b466f3d475"
-  ],
-  "uncles": [],
-  "l1BlockNumber": "0xcd2941"
+    "baseFeePerGas": "0x342770c0",
+    "difficulty": "0x0",
+    "extraData": "0xd983010c01846765746888676f312e32302e378664617277696e",
+    "gasLimit": "0xafa5bd",
+    "gasUsed": "0x5208",
+    "hash": "0xf5c52795b6fb4b69601e8613c436e07d964b33fb97b5b2b8670a106e0617bf6e",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "miner": "0x0000000000000000000000000000000000000000",
+    "mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "nonce": "0x0000000000000000",
+    "number": "0x1",
+    "parentHash": "0xd7bcb282488afadddab1b33e1d5906d1cf367bfc6249b6eaf140961e986621c2",
+    "receiptsRoot": "0xf78dfb743fbd92ade140711c8bbc542b5e307f0ab7984eff35d751969fe57efa",
+    "sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
+    "size": "0x2ad",
+    "stateRoot": "0x05b0dc6527b6d706aa6400866014f8f0bc4996ac8f7b9c4d7b4801fccfad139f",
+    "timestamp": "0x64fc7d7a",
+    "totalDifficulty": "0x0",
+    "transactions": [
+        "0xfae530d45ec70be05c68aaa0628588f0055f4aae360a8c090c2591e8691a47ca"
+    ],
+    "transactionsRoot": "0x8b2e1c5c5426fb942d176fac9186a05911c41867709a9fa43b05e2051a64f712",
+    "uncles": [],
+    "withdrawals": [],
+    "withdrawalsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421"
 }
-$ export USDT_ADDRESS=0xdac17f958d2ee523a2206206994597c13d831ec7
-$ web3-cli --chain eth --abi-name erc20 --call-to $USDT_ADDRESS symbol
+```
+
+web3-cli supports built-in chain config as well.
+
+```console
+$ web3-cli --chain eth eth_blockNumber
+"0x1142cb9"
+$ web3-cli --chain bsc eth_chainId
+"0x38"
+```
+
+You can run `web3-cli chains` to get all built-in chain configs.
+
+Of course, you can also use your own rpc endpoint
+
+```console
+$ web3-cli --rpc https://rpc.ankr.com/arbitrum eth_chainId
+"0xa4b1"
+```
+
+**Call a contract with human-readable params**
+
+```console
+$ web3-cli --chain eth --abi-name erc20 --call-to 0xdac17f958d2ee523a2206206994597c13d831ec7 symbol
 [
     "USDT"
 ]
-# fetch abi from explorer
+```
+
+the `--abi-name` could be a built-in abi name, you can `web3-cli abis` to get the built-in abi list.
+
+and it also could be a url and file path.
+
+```
+$ web3-cli --chain eth --abi-name https://http-server/abi/abi.json
+$ web3-cli --chain eth --abi-name local/path/to/abi.json
+```
+
+one more, it can fetch abi from explorer api automatically
+
+```
 $ web3-cli --chain eth --call-to $USDT_ADDRESS getOwner
 [
     "0xc6cde7c39eb2f0f0095f41570af89efc2c1ea828"
 ]
+```
+
+you may need to provide your explorer api endpoint as well if you provide a custom rpc
+
+```console
+$ # not required if use a built-in chain
+$ web3-cli --chain eth --rpc https://my-own-rpc.com
+$ web3-cli --rpc https://my-own-rpc.com --explorer-api https://my-custom-explorer.com/api
 ```

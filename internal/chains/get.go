@@ -21,7 +21,7 @@ func Get(n string) *Chain {
 	}
 
 	if utils.IsNumber(n) {
-		if s, err := strconv.ParseUint(n, 10, 32); err == nil {
+		if s, err := strconv.ParseUint(n, 10, 64); err == nil {
 			for _, item := range Buintin {
 				if item.Id == s {
 					return item

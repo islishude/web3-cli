@@ -131,7 +131,7 @@ What about a complex abi type parameter, like array and tuple?
 
 you must use a hex string
 
-```json
+```
 0x776562332d636c6920697320736f20636f6f6c21
 ```
 
@@ -172,8 +172,10 @@ json array is valid (you can use it in Remix)
 
 json object is valid as well!
 
+the key is the tuple name, for most cases, you can just use the field name.
+
 ```json
-{ "address": "0x0000000000000000000000000000000000000000", "value": "0x1" }
+{ "to": "0x0000000000000000000000000000000000000000", "value": "0x1" }
 ```
 
 ## Contribute

@@ -4,9 +4,9 @@
 
 ## Install
 
-Download it in the latest [release page](https://github.com/goreleaser/example/releases/latest).
+You can download the binary in the latest [release page](https://github.com/islishude/web3-cli/releases/latest).
 
-Install with docker
+or you have docker
 
 ```
 docker pull ghcr.io/islishude/web3-cli

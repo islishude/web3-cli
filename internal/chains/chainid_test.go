@@ -59,6 +59,7 @@ func TestChainId(t *testing.T) {
 
 		item := item
 		t.Run(item.Name, func(t *testing.T) {
+			t.Parallel()
 			if err := validIt(item); err != nil {
 				t.Errorf("invalid chain config: %s", err)
 			}

@@ -8,11 +8,11 @@ import (
 )
 
 type Chain struct {
-	Name     string
-	Id       uint64
-	Endpoint string   `json:",omitempty"`
-	Explorer string   `json:",omitempty"`
-	Alias    []string `json:",omitempty"`
+	Name     string   // chain name
+	Id       uint64   // chain id
+	Endpoint string   `json:",omitempty"` // the rpc endpoint, https and wss supported
+	Explorer string   `json:",omitempty"` // explorer api full endpoint
+	Alias    []string `json:",omitempty"` // name alias, e.g. the name of eth mainnet is eth, you can also add alias like eth-mainnet
 }
 
 func Get(n string) *Chain {

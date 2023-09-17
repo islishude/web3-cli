@@ -97,7 +97,7 @@ var polygon = &Chain{
 	Name:     "polygon",
 	Id:       137,
 	Endpoint: "https://polygon.llamarpc.com",
-	Explorer: "https://api-testnet.polygonscan.com/api",
+	Explorer: "https://api.polygonscan.com/api",
 	Alias:    []string{"matic"},
 }
 
@@ -105,7 +105,7 @@ var polygonMubai = &Chain{
 	Name:     "polygon-mubai",
 	Id:       80001,
 	Endpoint: "https://rpc-mumbai.maticvigil.com",
-	Explorer: "https://api.polygonscan.com/api",
+	Explorer: "https://api-testnet.polygonscan.com/api",
 }
 
 var base = &Chain{

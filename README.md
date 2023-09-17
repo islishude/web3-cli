@@ -99,13 +99,13 @@ the `--abi-name` could be a built-in abi name, you can `web3-cli abis` to get th
 and it also could be a url and file path.
 
 ```
-$ web3-cli --chain eth --abi-name https://http-server/abi/abi.json
-$ web3-cli --chain eth --abi-name local/path/to/abi.json
+$ web3-cli --chain eth --abi-path https://http-server/abi/abi.json
+$ web3-cli --chain eth --abi-path local/path/to/abi.json
 ```
 
-one more, if you don't provide `--abi-name`, web3-cli can fetch the abi from explorer api automatically
+if you don't provide `--abi-name` or `--abi-path`, web3-cli can fetch the abi from explorer api automatically
 
-```
+```console
 $ web3-cli --chain eth --call-to $USDT_TOKEN getOwner
 [
     "0xc6cde7c39eb2f0f0095f41570af89efc2c1ea828"
@@ -125,10 +125,7 @@ What about a complex abi type parameter, like array and tuple?
 **bytes**
 
 ```solidity
-    function logbyt(bytes memory _log) public returns (bytes memory log){
-        counter++;
-        return _log;
-    }
+function logbyt(bytes memory) public returns (bytes memory)
 ```
 
 you must use a hex string
@@ -140,11 +137,7 @@ you must use a hex string
 **array and slice**
 
 ```solidity
-    function add(uint256[] calldata items) public pure returns (uint256 sum) {
-        for (uint256 i = 0; i < items.length; i++){
-            sum += items[i];
-        }
-    }
+function add(uint256[] calldata items) public pure returns (uint256)
 ```
 
 json array is valid
@@ -156,14 +149,14 @@ json array is valid
 **tuple(struct)**
 
 ```solidity
-    struct Payment {
-        address payable to;
-        uint256 value;
-    }
+struct Payment {
+    address payable to;
+    uint256 value;
+}
 
-    function transfer(Payment calldata item) external payable returns (bool success) {
-       return item.to.send(msg.value);
-    }
+function transfer(Payment calldata item) external payable returns (bool success) {
+    return item.to.send(msg.value);
+}
 ```
 
 json array is valid (you can use it in Remix)
@@ -180,23 +173,26 @@ the key is the tuple name, for most cases, you can just use the field name.
 { "to": "0x0000000000000000000000000000000000000000", "value": "0x1" }
 ```
 
-## Contribute
+## Contribution
 
 **How to add your chain to built-in list?**
 
-Add it to `internal/chains/list.go` file.
+Add it to [internal/chains/list.go](./internal/chains/list.go) file.
 
 for example:
 
 ```go
-var eth = &Chain{
-	Name:     "eth",
-	Id:       1,
-	Endpoint: "https://cloudflare-eth.com",
-	Explorer: "https://api.etherscan.io/api",
-	Alias:    []string{"eth-mainnet", "mainnet"},
+var example = &Chain{
+	Name:     "example",
+	Id:       111000111,
+	Endpoint: "https://jsonrpc-endpoint.example",
+	Explorer: "https://full-explorer-api-endpoint.example/api",
 }
 ```
+
+then append it to `Builtin` slice.
+
+you also need to add a test case for it in [internal/chains/explorer_api_test.go](./internal/chains/explorer_api_test.go)
 
 **How to add an ABI to built-in list?**
 

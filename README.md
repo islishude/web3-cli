@@ -4,6 +4,8 @@
 
 ## Install
 
+Download it in the latest [release page](https://github.com/goreleaser/example/releases/latest).
+
 Install with docker
 
 ```

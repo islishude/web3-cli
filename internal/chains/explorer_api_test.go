@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -17,14 +18,22 @@ import (
 
 func TestExplorer(t *testing.T) {
 	// api key is not required
-	apiKeyList := map[string]string{}
+	apiKeyList := map[string]string{
+		"eth":     "ENV_ETHERSCAN_API_KEY",
+		"goerli":  "ENV_ETHERSCAN_API_KEY",
+		"sepolia": "ENV_ETHERSCAN_API_KEY",
+		"holesky": "ENV_ETHERSCAN_API_KEY",
+	}
+
 	addrList := map[string]string{
 		// https://etherscan.io/contractsVerified
 		"eth": "0xdac17f958d2ee523a2206206994597c13d831ec7",
 		// https://goerli.etherscan.io/contractsVerified
-		"goerli": "0x802b842d3e515a9c3a5da2899c4aaeacbf3f5b45",
+		"goerli": "0x0E641aeAB50481B521ce3051cDb38a2D9ac9C9cc",
 		// https://sepolia.etherscan.io/contractsVerified
 		"sepolia": "0xaaA68C69e625d349c734318423eB07bA1dC1101D",
+		// https://holesky.etherscan.io/contractsVerified
+		"holesky": "0xb7fb99e86f93dc3047a12932052236d853065173",
 		// https://arbiscan.io/contractsVerified
 		"arbitrum": "0x1a3b50Bd09594f96dDC192396CE41256EBe0726e",
 		// https://goerli.arbiscan.io/contractsVerified
@@ -61,14 +70,19 @@ func TestExplorer(t *testing.T) {
 			return fmt.Errorf("invalid address")
 		}
 
-		explorer, err := utils.URLToGetABI(item.Explorer, addr, apiKeyList[item.Name])
+		apiKey := apiKeyList[item.Name]
+		if strings.HasPrefix(apiKey, "ENV") {
+			apiKey = os.Getenv(apiKey)
+		}
+
+		explorer, err := utils.URLToGetABI(item.Explorer, addr, apiKey)
 		if err != nil {
 			return fmt.Errorf("invalid explorer endpoint: %s", err)
 		}
 
 		// test if the address exists
 		{
-			ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
+			ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 			defer cancel()
 
 			jsonrpc, err := ethclient.DialContext(ctx, item.Endpoint)
@@ -89,7 +103,7 @@ func TestExplorer(t *testing.T) {
 
 		// fetch abi
 		{
-			ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
+			ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 			defer cancel()
 
 			expReq, err := http.NewRequestWithContext(ctx, http.MethodGet, explorer, nil)
@@ -108,7 +122,7 @@ func TestExplorer(t *testing.T) {
 				return fmt.Errorf("failed to decode result to json: %s", err)
 			}
 			if res["status"] == "0" {
-				return fmt.Errorf("error from explorer: %s", res["message"])
+				return fmt.Errorf("error from explorer: %s: %s", res["message"], res["result"])
 			}
 
 			if _, err := abi.JSON(strings.NewReader(res["result"])); err != nil {

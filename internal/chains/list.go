@@ -5,6 +5,7 @@ var Buintin = []*Chain{
 	eth,
 	ethGoerli,
 	ethSepolia,
+	ethHolesky,
 	arbitrum,
 	arbitrumGoerli,
 	opMainnet,
@@ -46,6 +47,14 @@ var ethSepolia = &Chain{
 	Endpoint: "https://rpc.sepolia.org",
 	Explorer: "https://api-sepolia.etherscan.io/api",
 	Alias:    []string{"eth-sepolia"},
+}
+
+var ethHolesky = &Chain{
+	Name:     "holesky",
+	Id:       17000,
+	Endpoint: "https://ethereum-holesky.publicnode.com",
+	Explorer: "https://holesky.etherscan.io/api",
+	Alias:    []string{"eth-holesky"},
 }
 
 var arbitrum = &Chain{

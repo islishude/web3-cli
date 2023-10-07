@@ -53,7 +53,7 @@ var ethHolesky = &Chain{
 	Name:     "holesky",
 	Id:       17000,
 	Endpoint: "https://ethereum-holesky.publicnode.com",
-	Explorer: "https://holesky.etherscan.io/api",
+	Explorer: "https://api-holesky.etherscan.io/api",
 	Alias:    []string{"eth-holesky"},
 }
 

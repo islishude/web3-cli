@@ -19,3 +19,5 @@ jobs:
           go-version: "1.21"
       - run: go build
       - run: go test -v ./...
+        env:
+          ENV_ETHERSCAN_API_KEY: ${{ secrets.ENV_ETHERSCAN_API_KEY }}

@@ -2,6 +2,7 @@ package main
 
 import (
 	_ "embed"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -46,6 +47,23 @@ func main() {
 				Description: "display builtin contracts ABI",
 				Action: func(ctx *cli.Context) error {
 					return utils.PrintJson(os.Stdout, abis.Builtin(), true)
+				},
+			},
+			{
+				Name:        "tools",
+				Description: "handy tools",
+				Subcommands: []*cli.Command{
+					{
+						Name:        "decode-raw-tx",
+						Description: "decode raw transaction",
+						Action: func(ctx *cli.Context) error {
+							data, err := utils.DecodeRawTransaction(ctx.Args().First())
+							if err != nil {
+								return err
+							}
+							return utils.PrintJson(os.Stdout, json.RawMessage(data), true)
+						},
+					},
 				},
 			},
 		},

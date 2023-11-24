@@ -41,7 +41,7 @@ func TestExplorer(t *testing.T) {
 		// https://optimistic.etherscan.io/contractsVerified
 		"op": "0xb54b6262407DB03Be70B6e697DE8F880c94a1461",
 		// https://goerli-optimism.etherscan.io/contractsVerified
-		"op-goerli": "0x4A74b06f075D17fe91690719Eb285687AEcE5748",
+		"op-goerli": "0x98108048528e45f621ad024a1a36f572fcbc64cb",
 		// https://bscscan.com/contractsVerified
 		"bsc": "0xFf179bea631ef161aACe1E0764e7587c0541a566",
 		// https://testnet.bscscan.com/contractsVerified

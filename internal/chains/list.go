@@ -98,7 +98,7 @@ var bscMainnet = &Chain{
 var bscTestnet = &Chain{
 	Name:     "bsc-testnet",
 	Id:       97,
-	Endpoint: "https://data-seed-prebsc-1-s1.bnbchain.org:8545",
+	Endpoint: "https://bsc-testnet.publicnode.com",
 	Explorer: "https://api-testnet.bscscan.com/api",
 }
 

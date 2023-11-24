@@ -1,7 +1,11 @@
 package utils
 
 import (
+	"fmt"
 	"testing"
+
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/crypto"
 )
 
 func TestDecodeRawTransaction(t *testing.T) {
@@ -43,6 +47,37 @@ func TestDecodeRawTransaction(t *testing.T) {
 			}
 			if string(got) != tt.want {
 				t.Errorf("DecodeRawTransaction() = %s, want %s", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestNewRandomAddress(t *testing.T) {
+	for i := 0; i < 10; i++ {
+		t.Run(fmt.Sprintf("TestNewRandomAddress %d", i), func(t *testing.T) {
+			t.Parallel()
+
+			addr, err := NewRandomAddress()
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			privateKey, err := crypto.HexToECDSA(addr.PrivateKey[2:])
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			publicKey, err := crypto.UnmarshalPubkey(hexutil.MustDecode(addr.PublicKey))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if !privateKey.PublicKey.Equal(publicKey) {
+				t.Fatalf("invalid public key")
+			}
+
+			if addr.Address != crypto.PubkeyToAddress(*publicKey).Hex() {
+				t.Fatalf("invalid address")
 			}
 		})
 	}

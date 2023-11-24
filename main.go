@@ -64,6 +64,17 @@ func main() {
 							return utils.PrintJson(os.Stdout, json.RawMessage(data), true)
 						},
 					},
+					{
+						Name:        "new-random-address",
+						Description: "create a new random address",
+						Action: func(ctx *cli.Context) error {
+							result, err := utils.NewRandomAddress()
+							if err != nil {
+								return err
+							}
+							return utils.PrintJson(os.Stdout, result, true)
+						},
+					},
 				},
 			},
 		},

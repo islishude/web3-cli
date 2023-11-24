@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/islishude/web3-cli/internal/utils"
 	"github.com/urfave/cli/v2"
 )
@@ -69,12 +67,7 @@ var (
 		Value:   "0",
 		Usage:   "gas limit for contract call",
 		EnvVars: []string{"WEB3_CLI_CONTRACT_CALL_GAS"},
-		Action: func(ctx *cli.Context, s string) error {
-			if v := utils.ToBigInt(s); v != nil {
-				return ctx.Set("call-gas", v.String())
-			}
-			return fmt.Errorf("invalid number: %s", s)
-		},
+		Action:  utils.EthCallGasFlagAction,
 	}
 
 	EthCallValueFlag = &cli.StringFlag{

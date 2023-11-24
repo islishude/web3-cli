@@ -5,7 +5,6 @@ go 1.20
 require (
 	github.com/ethereum/go-ethereum v1.13.5
 	github.com/urfave/cli/v2 v2.25.7
-	golang.org/x/crypto v0.15.0
 )
 
 require (
@@ -31,6 +30,7 @@ require (
 	github.com/tklauser/numcpus v0.6.1 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
 	github.com/yusufpapurcu/wmi v1.2.3 // indirect
+	golang.org/x/crypto v0.15.0 // indirect
 	golang.org/x/exp v0.0.0-20231006140011-7918f672742d // indirect
 	golang.org/x/mod v0.13.0 // indirect
 	golang.org/x/sync v0.4.0 // indirect

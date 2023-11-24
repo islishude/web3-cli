@@ -20,7 +20,7 @@ func TestEthCallValueFlagAction(t *testing.T) {
 			"eth-0", "0.001eth", "0x38d7ea4c68000", false,
 		},
 		{
-			"eth-1", "0.1234 eth", "0x731ba0dab900000", false,
+			"eth-1", "0.1234 eth", "0x1b667a56d488000", false,
 		},
 		{
 			"val-0", "16", "0x10", false,

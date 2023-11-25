@@ -46,7 +46,7 @@ var (
 	EthCallFromFlag = &cli.StringFlag{
 		Name:    "call-from",
 		Aliases: []string{"cf"},
-		Value:   "0x0000000000000000000000000000000000000000",
+		Value:   "",
 		Usage:   "from address for contract call",
 		EnvVars: []string{"WEB3_CLI_CONTRACT_FROM_ADDRESS"},
 		Action:  utils.EthCallFromFlagAction,

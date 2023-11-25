@@ -113,9 +113,9 @@ func main() {
 			defer rpcClient.Close()
 
 			if ctx.String(EthCallToFlag.Name) != "" {
-				return ContractCall(ctx, rpcClient, chainConf)
+				return ContractCall(ctx, rpcClient, chainConf, os.Stdout)
 			}
-			return JsonrpcCall(ctx, rpcClient)
+			return JsonrpcCall(ctx, rpcClient, os.Stdout)
 		},
 	}
 

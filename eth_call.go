@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"os"
+	"io"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -13,26 +13,27 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-type CallMsg struct {
-	From  string        `json:"from"`
+type EthCallMsg struct {
+	From  string        `json:"from,omitempty"`
 	To    string        `json:"to"`
 	Data  hexutil.Bytes `json:"data,omitempty"`
 	Value *hexutil.Big  `json:"value,omitempty"`
 	Gas   hexutil.Uint  `json:"gas,omitempty"`
 }
 
-func ContractCall(ctx *cli.Context, rpcClient *rpc.Client, chain *chains.Chain) (err error) {
-	callMsg := CallMsg{
-		From: ctx.String(EthCallFromFlag.Name),
-		To:   ctx.String(EthCallToFlag.Name),
+func ContractCall(ctx *cli.Context, rpcClient *rpc.Client, chain *chains.Chain, logger io.Writer) (err error) {
+	callMsg := EthCallMsg{To: ctx.String(EthCallToFlag.Name)}
+
+	if v := ctx.String(EthCallFromFlag.Name); v != "'" {
+		callMsg.From = v
 	}
 
-	if ctx.IsSet(EthCallGasFlag.Name) {
-		callMsg.Gas = hexutil.Uint(ctx.Uint64(EthCallGasFlag.Name))
+	if v := ctx.Uint64(EthCallGasFlag.Name); v != 0 {
+		callMsg.Gas = hexutil.Uint(v)
 	}
 
-	if ctx.IsSet(EthCallValueFlag.Name) {
-		callMsg.Value = (*hexutil.Big)(hexutil.MustDecodeBig(ctx.String(EthCallValueFlag.Name)))
+	if v := ctx.String(EthCallValueFlag.Name); v != "" {
+		callMsg.Value = (*hexutil.Big)(hexutil.MustDecodeBig(v))
 	}
 
 	abiIns, err := getABI(ctx, chain, callMsg.To)
@@ -69,7 +70,7 @@ func ContractCall(ctx *cli.Context, rpcClient *rpc.Client, chain *chains.Chain) 
 		return err
 	}
 
-	return utils.PrintJson(os.Stdout, result, true)
+	return utils.PrintJson(logger, result, true)
 }
 
 func getABI(ctx *cli.Context, chain *chains.Chain, contAddr string) (*abi.ABI, error) {

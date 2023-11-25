@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"os"
+	"io"
 
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/rpc"
@@ -10,7 +10,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func JsonrpcCall(ctx *cli.Context, rpcClient *rpc.Client) error {
+func JsonrpcCall(ctx *cli.Context, rpcClient *rpc.Client, logger io.Writer) error {
 	args := ctx.Args().Slice()
 	jsonrpcMethod := args[0]
 	jsonrpcParams, err := utils.ParseArgs(args[1:])
@@ -23,5 +23,5 @@ func JsonrpcCall(ctx *cli.Context, rpcClient *rpc.Client) error {
 		jsonrpcMethod, jsonrpcParams...); err != nil && err != ethereum.NotFound {
 		return err
 	}
-	return utils.PrintJson(os.Stdout, result, true)
+	return utils.PrintJson(logger, result, true)
 }

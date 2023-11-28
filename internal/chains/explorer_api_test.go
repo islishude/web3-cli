@@ -93,7 +93,7 @@ func TestExplorer(t *testing.T) {
 
 			code, err := jsonrpc.CodeAt(ctx, common.HexToAddress(addr), nil)
 			if err != nil {
-				return fmt.Errorf("failed to get code for %s", addr)
+				return fmt.Errorf("failed to get code for %s: %s", addr, err)
 			}
 
 			if len(code) == 0 {

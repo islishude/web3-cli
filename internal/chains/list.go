@@ -28,7 +28,7 @@ var local = &Chain{
 var eth = &Chain{
 	Name:     "eth",
 	Id:       1,
-	Endpoint: "https://cloudflare-eth.com",
+	Endpoint: "https://eth.llamarpc.com",
 	Explorer: "https://api.etherscan.io/api",
 	Alias:    []string{"eth-mainnet", "mainnet"},
 }

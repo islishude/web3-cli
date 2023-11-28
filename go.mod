@@ -38,3 +38,11 @@ require (
 	golang.org/x/tools v0.14.0 // indirect
 	rsc.io/tmplfunc v0.0.3 // indirect
 )
+
+// legacy versions
+retract (
+	v1.1.1
+	v1.1.0
+	v1.0.0
+	v0.0.1
+)

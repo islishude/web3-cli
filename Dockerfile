@@ -5,7 +5,7 @@ WORKDIR /app
 COPY . .
 RUN --mount=type=cache,target=/go/pkg/mod --mount=type=cache,target=/root/.cache/go-build go install
 
-FROM --platform=${BUILDPLATFORM} alpine:3.18.4
+FROM --platform=${BUILDPLATFORM} alpine:3.18.5
 RUN apk add --no-cache jq
 COPY --from=compiler /go/bin/web3-cli /usr/local/bin/
 COPY --from=compiler /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/

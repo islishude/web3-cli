@@ -57,3 +57,10 @@ func EthCallValueFlagAction(ctx *cli.Context, s string) error {
 		return fmt.Errorf("invalid number: %s", s)
 	}
 }
+
+func HexStringValidAction(ctx *cli.Context, s string) error {
+	if IsHex(s) {
+		return nil
+	}
+	return fmt.Errorf("invalid hex string: %s", s)
+}

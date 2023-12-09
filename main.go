@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"runtime"
 
 	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/islishude/web3-cli/internal/abis"
@@ -67,11 +68,10 @@ func main() {
 					{
 						Name:        "new-random-address",
 						Description: "create a new random address",
+						Flags:       []cli.Flag{NewAddressPrefixFlag, NewAddressSuffixFlag},
 						Action: func(ctx *cli.Context) error {
-							result, err := utils.NewRandomAddress()
-							if err != nil {
-								return err
-							}
+							result := utils.NewRandomAddress(
+								ctx.String(NewAddressPrefixFlag.Name), ctx.String(NewAddressSuffixFlag.Name), runtime.NumCPU())
 							return utils.PrintJson(os.Stdout, result, true)
 						},
 					},

@@ -1,6 +1,8 @@
 package utils
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestIsAddress(t *testing.T) {
 	type args struct {
@@ -19,6 +21,24 @@ func TestIsAddress(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := IsAddress(tt.args.v); got != tt.want {
 				t.Errorf("IsAddress() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestIsHex(t *testing.T) {
+	tests := []struct {
+		name string
+		want bool
+	}{
+		{"0xdEa01Dbeaf23", true},
+		{"123abcdef", true},
+		{"0xqwert", false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := IsHex(tt.name); got != tt.want {
+				t.Errorf("IsHex() = %v, want %v", got, tt.want)
 			}
 		})
 	}

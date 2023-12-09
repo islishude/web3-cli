@@ -92,4 +92,16 @@ var (
 		Usage:   "explorer api key",
 		EnvVars: []string{"WEB3_CLI_EXPLORER_API_KEY"},
 	}
+
+	NewAddressPrefixFlag = &cli.StringFlag{
+		Name:   "prefix",
+		Usage:  "address prefix",
+		Action: utils.HexStringValidAction,
+	}
+
+	NewAddressSuffixFlag = &cli.StringFlag{
+		Name:   "suffix",
+		Usage:  "address suffix",
+		Action: utils.HexStringValidAction,
+	}
 )

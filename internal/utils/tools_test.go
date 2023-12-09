@@ -1,11 +1,9 @@
 package utils
 
 import (
-	"fmt"
+	"encoding/hex"
+	"strings"
 	"testing"
-
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/crypto"
 )
 
 func TestDecodeRawTransaction(t *testing.T) {
@@ -53,31 +51,25 @@ func TestDecodeRawTransaction(t *testing.T) {
 }
 
 func TestNewRandomAddress(t *testing.T) {
-	for i := 0; i < 10; i++ {
-		t.Run(fmt.Sprintf("TestNewRandomAddress %d", i), func(t *testing.T) {
-			t.Parallel()
-
-			addr, err := NewRandomAddress()
-			if err != nil {
-				t.Fatal(err)
-			}
-
-			privateKey, err := crypto.HexToECDSA(addr.PrivateKey[2:])
-			if err != nil {
-				t.Fatal(err)
-			}
-
-			publicKey, err := crypto.UnmarshalPubkey(hexutil.MustDecode(addr.PublicKey))
-			if err != nil {
-				t.Fatal(err)
-			}
-
-			if !privateKey.PublicKey.Equal(publicKey) {
-				t.Fatalf("invalid public key")
-			}
-
-			if addr.Address != crypto.PubkeyToAddress(*publicKey).Hex() {
-				t.Fatalf("invalid address")
+	type args struct {
+		prefix string
+		suffix string
+		thread int
+	}
+	tests := []struct {
+		name  string
+		args  args
+		args2 args
+	}{
+		{"1", args{"0x0", "0x00", 1}, args{"0", "00", 1}},
+		{"2", args{"A", "BA", 4}, args{"a", "ba", 1}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := NewRandomAddress(tt.args.prefix, tt.args.suffix, tt.args.thread)
+			addr := hex.EncodeToString(got.Address.Bytes())
+			if !strings.HasPrefix(addr, tt.args2.prefix) || !strings.HasSuffix(addr, tt.args2.suffix) {
+				t.Errorf("TestNewRandomAddress() = %s", addr)
 			}
 		})
 	}

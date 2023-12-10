@@ -174,6 +174,45 @@ the key is the field name, and it is not case sensitive.
 { "To": "0x0000000000000000000000000000000000000000", "Value": "0x1" }
 ```
 
+## Built-in tools
+
+**Create a new address with optional prefix and suffix**
+
+```console
+$ web3-cli tools new-random-address --prefix 00 --suffix 00
+{
+    "Address": "0x00BbEA9643992F70879a1f4009a18c82B14f1A00",
+    "PrivateKey": "0xc44591dd44df800b1f9$REDACTED$be239403741b2196ca28",
+    "PublicKey": "0x044708bac89fd0c4f595b0808c068350cf889d7aeea67848498997458c0541da955a7b6c8aafd5e8fbe00edfabb2d47da9fee680b711b2ce90401145ffce90defe"
+}
+```
+
+**Decode raw transactions**
+
+NOTE: OP system transactions are not supported.
+
+```console
+$ web3-cli tools decode-raw-tx 0x...REDACTED...
+{
+    "type": "0x2",
+    "chainId": "0x1",
+    "nonce": "0x1018",
+    "to": "0x388c818ca8b9251b393131c08a736a67ccb19297",
+    "gas": "0x565f",
+    "gasPrice": null,
+    "maxPriorityFeePerGas": "0x0",
+    "maxFeePerGas": "0x50c81c068",
+    "value": "0x475c0000a4d611",
+    "input": "0x",
+    "accessList": [],
+    "v": "0x1",
+    "r": "0xa5a963fee24751d6f54656be527c699584ef47aade8a677c806f119b02b0daf7",
+    "s": "0x257af2dbf67d167dfbf4f4acf032b43ca4fa8b8f06ae8b09f16bd2cc57817ce4",
+    "yParity": "0x1",
+    "hash": "0x048117077d33c6f3670d601de5525dda41374719162cb0ed252726559d4ffe70"
+}
+```
+
 ## Contribution
 
 **How to add your chain to built-in list?**

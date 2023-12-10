@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -9,40 +8,6 @@ import (
 	"strconv"
 	"strings"
 )
-
-func parseJsonRawMsg(args ...json.RawMessage) (params []any, err error) {
-	for _, v := range args {
-		switch {
-		case bytes.HasPrefix(v, []byte("{")):
-			var raw map[string]any
-			if err := json.Unmarshal([]byte(v), &raw); err != nil {
-				return nil, fmt.Errorf("invalid json object %s", v)
-			}
-			params = append(params, raw)
-		case bytes.HasPrefix(v, []byte("[")):
-			var raw []json.RawMessage
-			if err := json.Unmarshal([]byte(v), &raw); err != nil {
-				return nil, fmt.Errorf("invalid json array %s", v)
-			}
-			var got []any
-			for _, item := range raw {
-				res, err := parseJsonRawMsg(item)
-				if err != nil {
-					return nil, err
-				}
-				got = append(got, res...)
-			}
-			params = append(params, got)
-		default:
-			var res any
-			if err := json.Unmarshal(v, &res); err != nil {
-				return nil, err
-			}
-			params = append(params, res)
-		}
-	}
-	return params, nil
-}
 
 func ParseArgs(args []string) (params []any, err error) {
 	for _, v := range args {
@@ -59,19 +24,11 @@ func ParseArgs(args []string) (params []any, err error) {
 		case v == "null":
 			params = append(params, nil)
 		case strings.HasPrefix(v, "["):
-			var raw []json.RawMessage
+			var raw []any
 			if err := json.Unmarshal([]byte(v), &raw); err != nil {
 				return nil, fmt.Errorf("invalid json array %s", v)
 			}
-			var got []any
-			for _, item := range raw {
-				res, err := parseJsonRawMsg(item)
-				if err != nil {
-					return nil, err
-				}
-				got = append(got, res...)
-			}
-			params = append(params, got)
+			params = append(params, raw)
 		case strings.HasPrefix(v, "{"):
 			var raw map[string]any
 			if err := json.Unmarshal([]byte(v), &raw); err != nil {

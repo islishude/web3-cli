@@ -90,7 +90,7 @@ $ web3-cli --chain eth --abi-name erc20 --call-to $USDT_TOKEN symbol
 ]
 $ web3-cli --chain eth --call-to $USDT_TOKEN balanceOf 0x0000000000000000000000000000000000000000
 [
-    10123456
+    "0xbf17d330"
 ]
 ```
 

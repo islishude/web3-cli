@@ -11,11 +11,11 @@ import (
 	"github.com/islishude/web3-cli/internal/abis"
 )
 
-//go:embed testdata/typetest.abi.json
-var typeTestRawABI string
+//go:embed testdata/pack.abi.json
+var packRawABI string
 
 func TestPack(t *testing.T) {
-	ttabi, err := abi.JSON(strings.NewReader(typeTestRawABI))
+	ttabi, err := abi.JSON(strings.NewReader(packRawABI))
 	if err != nil {
 		t.Fatal(err)
 	}

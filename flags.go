@@ -5,90 +5,84 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+const (
+	CallCategory = "ETH CALL"
+)
+
 var (
 	ChainNameFlag = &cli.StringFlag{
 		Name:    "chain",
 		Value:   "local",
 		Aliases: []string{"c"},
-		Usage:   "chain id or chain name, run `web3-cli chains` to get built-in chain configuration",
-		EnvVars: []string{"WEB3_CLI_CHAIN", "web3" /*compatible*/},
+		Usage:   "chain id or chain name, run `web3-cli chains` to get built-in chains",
+		EnvVars: []string{"web3"},
 	}
 
 	RPCFlag = &cli.StringFlag{
 		Name:    "rpc",
 		Aliases: []string{"r"},
 		Usage:   "custom rpc endpoint to connect",
-		EnvVars: []string{"WEB3_CLI_RPC"},
 	}
 
 	ABINameFlag = &cli.StringFlag{
-		Name:    "abi-name",
-		Aliases: []string{"an"},
-		Usage:   "if you want to do a contract call, you should provide this",
-		EnvVars: []string{"WEB3_CLI_ABI_NAME"},
+		Name:     "abi-name",
+		Usage:    "if you want to do a contract call, you should provide this",
+		Category: CallCategory,
 	}
 
 	ABIPathFlag = &cli.StringFlag{
-		Name:    "abi-path",
-		Aliases: []string{"ap"},
-		Usage:   "use your local abi path, or a url from a http server",
-		EnvVars: []string{"WEB3_CLI_ABI_PATH"},
+		Name:     "abi-path",
+		Usage:    "use your local abi path, or a url from a http server",
+		Category: CallCategory,
 	}
 
 	EthCallToFlag = &cli.StringFlag{
-		Name:    "call-to",
-		Aliases: []string{"contract", "ct"},
-		Usage:   "contract address to read or write",
-		EnvVars: []string{"WEB3_CLI_CONTRACT_ADDRESS"},
-		Action:  utils.EthCallToFlagAction,
+		Name:     "call-to",
+		Aliases:  []string{"contract", "ct"},
+		Usage:    "contract address to read or write",
+		Action:   utils.EthCallToFlagAction,
+		Category: CallCategory,
 	}
 
 	EthCallFromFlag = &cli.StringFlag{
-		Name:    "call-from",
-		Aliases: []string{"cf"},
-		Value:   "",
-		Usage:   "from address for contract call",
-		EnvVars: []string{"WEB3_CLI_CONTRACT_FROM_ADDRESS"},
-		Action:  utils.EthCallFromFlagAction,
+		Name:     "call-from",
+		Usage:    "from address for contract call",
+		Action:   utils.EthCallFromFlagAction,
+		Category: CallCategory,
 	}
 
 	EthCallHeightFlag = &cli.StringFlag{
-		Name:    "call-height",
-		Aliases: []string{"ch"},
-		Value:   "latest",
-		Usage:   "height for contract call",
-		EnvVars: []string{"WEB3_CLI_CONTRACT_FROM_ADDRESS"},
-		Action:  utils.EthCallHeightFlagAction,
+		Name:     "call-height",
+		Value:    "latest",
+		Usage:    "height for contract call",
+		Action:   utils.EthCallHeightFlagAction,
+		Category: CallCategory,
 	}
 
 	EthCallGasFlag = &cli.StringFlag{
-		Name:    "call-gas",
-		Aliases: []string{"cg"},
-		Value:   "0",
-		Usage:   "gas limit for contract call",
-		EnvVars: []string{"WEB3_CLI_CONTRACT_CALL_GAS"},
-		Action:  utils.EthCallGasFlagAction,
+		Name:     "call-gas",
+		Value:    "0",
+		Usage:    "gas limit for contract call",
+		Action:   utils.EthCallGasFlagAction,
+		Category: CallCategory,
 	}
 
 	EthCallValueFlag = &cli.StringFlag{
-		Name:    "call-value",
-		Aliases: []string{"cg"},
-		Value:   "0",
-		Usage:   "ether value for contract call",
-		EnvVars: []string{"WEB3_CLI_CONTRACT_CALL_VALUE"},
-		Action:  utils.EthCallValueFlagAction,
+		Name:     "call-value",
+		Value:    "0",
+		Usage:    "ether value for contract call",
+		Action:   utils.EthCallValueFlagAction,
+		Category: CallCategory,
 	}
 
 	ExplorerApiFlag = &cli.StringFlag{
-		Name:    "explorer-api",
-		Aliases: []string{"ea"},
-		Usage:   "explorer api, it's used for fetching ABI",
-		EnvVars: []string{"WEB3_CLI_EXPLORER_API"},
+		Name:     "explorer-api",
+		Usage:    "explorer api, it's used for fetching ABI",
+		Category: CallCategory,
 	}
 
 	ExplorerApiKeyFlag = &cli.StringFlag{
 		Name:    "explorer-api-key",
-		Aliases: []string{"ek"},
 		Usage:   "explorer api key",
 		EnvVars: []string{"WEB3_CLI_EXPLORER_API_KEY"},
 	}

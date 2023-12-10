@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"math/big"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -75,7 +74,7 @@ func TestContractCall(t *testing.T) {
 			height:     "latest",
 			abiArgs:    []string{"0xb228200dfc46e5da38e751d586045f112b0eda2c"},
 			wantInput:  "0x70a08231000000000000000000000000b228200dfc46e5da38e751d586045f112b0eda2c",
-			result:     []any{big.NewInt(100)},
+			result:     []any{"0x64"},
 			abiOutput:  hexutil.MustDecode("0x0000000000000000000000000000000000000000000000000000000000000064"),
 		},
 		{
@@ -86,7 +85,7 @@ func TestContractCall(t *testing.T) {
 			height:     "0x64",
 			abiArgs:    []string{},
 			wantInput:  "0x18160ddd",
-			result:     []any{big.NewInt(100)},
+			result:     []any{"0x64"},
 			abiOutput:  hexutil.MustDecode("0x0000000000000000000000000000000000000000000000000000000000000064"),
 		},
 		{

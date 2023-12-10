@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"reflect"
 	"strconv"
+	"strings"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
@@ -118,9 +119,14 @@ func tupleEncode(abiType *abi.Type, arg any) (res any, err error) {
 			return nil, fmt.Errorf("invalid length of the tuple type for %s", abiType.String())
 		}
 	} else {
-		var tuple map[string]json.RawMessage
-		if err := json.Unmarshal(rawArg, &tuple); err != nil {
+		var tmp map[string]json.RawMessage
+		if err := json.Unmarshal(rawArg, &tmp); err != nil {
 			return nil, fmt.Errorf("invalid json input: %s", rawArg)
+		}
+
+		tuple := make(map[string]json.RawMessage)
+		for key, value := range tmp {
+			tuple[abi.ToCamelCase(strings.ToLower(key))] = value
 		}
 
 		if len(tuple) != len(abiType.TupleElems) {
@@ -131,10 +137,7 @@ func tupleEncode(abiType *abi.Type, arg any) (res any, err error) {
 			var item json.RawMessage
 			item, has := tuple[abi.ToCamelCase(cname)]
 			if !has {
-				item, has = tuple[cname]
-				if !has {
-					return nil, fmt.Errorf("miss %s filed for tuple %s", cname, abiType.String())
-				}
+				return nil, fmt.Errorf("miss %s filed for tuple %s", cname, abiType.String())
 			}
 			list = append(list, item)
 		}

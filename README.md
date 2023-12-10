@@ -167,10 +167,11 @@ json array is valid (you can use it in Remix)
 
 json object is valid as well!
 
-the key is the tuple name, for most cases, you can just use the field name.
+the key is the field name, and it is not case sensitive.
 
 ```json
 { "to": "0x0000000000000000000000000000000000000000", "value": "0x1" }
+{ "To": "0x0000000000000000000000000000000000000000", "Value": "0x1" }
 ```
 
 ## Contribution

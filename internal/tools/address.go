@@ -1,4 +1,4 @@
-package utils
+package tools
 
 import (
 	"context"
@@ -10,23 +10,8 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 )
-
-func DecodeRawTransaction(r string) ([]byte, error) {
-	bytx, err := hex.DecodeString(strings.TrimPrefix(r, "0x"))
-	if err != nil {
-		return nil, err
-	}
-
-	var tx types.Transaction
-	if err := tx.UnmarshalBinary(bytx); err != nil {
-		return nil, err
-	}
-
-	return tx.MarshalJSON()
-}
 
 type AddressInfo struct {
 	PrivateKey *ecdsa.PrivateKey

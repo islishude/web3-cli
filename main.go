@@ -11,6 +11,7 @@ import (
 	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/islishude/web3-cli/internal/abis"
 	"github.com/islishude/web3-cli/internal/chains"
+	"github.com/islishude/web3-cli/internal/tools"
 	"github.com/islishude/web3-cli/internal/utils"
 	"github.com/urfave/cli/v2"
 )
@@ -58,7 +59,7 @@ func main() {
 						Name:        "decode-raw-tx",
 						Description: "decode raw transaction",
 						Action: func(ctx *cli.Context) error {
-							data, err := utils.DecodeRawTransaction(ctx.Args().First())
+							data, err := tools.DecodeRawTransaction(ctx.Args().First())
 							if err != nil {
 								return err
 							}
@@ -70,7 +71,7 @@ func main() {
 						Description: "create a new random address",
 						Flags:       []cli.Flag{NewAddressPrefixFlag, NewAddressSuffixFlag},
 						Action: func(ctx *cli.Context) error {
-							result := utils.NewRandomAddress(
+							result := tools.NewRandomAddress(
 								ctx.String(NewAddressPrefixFlag.Name), ctx.String(NewAddressSuffixFlag.Name), runtime.NumCPU())
 							return utils.PrintJson(os.Stdout, result, true)
 						},

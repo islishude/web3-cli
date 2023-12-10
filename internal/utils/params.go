@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func parseJsonRawMsg(args []json.RawMessage) (params []any, err error) {
+func parseJsonRawMsg(args ...json.RawMessage) (params []any, err error) {
 	for _, v := range args {
 		switch {
 		case bytes.HasPrefix(v, []byte("{")):
@@ -26,17 +26,13 @@ func parseJsonRawMsg(args []json.RawMessage) (params []any, err error) {
 			}
 			var got []any
 			for _, item := range raw {
-				res, err := parseJsonRawMsg([]json.RawMessage{item})
+				res, err := parseJsonRawMsg(item)
 				if err != nil {
 					return nil, err
 				}
 				got = append(got, res...)
 			}
 			params = append(params, got)
-		case IsNumber(string(v)):
-			if t, ok := new(big.Int).SetString(string(v), 10); ok {
-				params = append(params, "0x"+t.Text(16))
-			}
 		default:
 			var res any
 			if err := json.Unmarshal(v, &res); err != nil {
@@ -69,7 +65,7 @@ func ParseArgs(args []string) (params []any, err error) {
 			}
 			var got []any
 			for _, item := range raw {
-				res, err := parseJsonRawMsg([]json.RawMessage{item})
+				res, err := parseJsonRawMsg(item)
 				if err != nil {
 					return nil, err
 				}

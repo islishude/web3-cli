@@ -18,9 +18,10 @@ func TestParseArgs(t *testing.T) {
 		{"invalid json", []string{`{"name":invalid}`}, nil, true},
 		{"eth_getBlockByNumber", []string{"100", "true"}, []any{"0x64", true}, false},
 		{"eth_getBlockByNumber_2", []string{"latest", "false"}, []any{"latest", false}, false},
-		{"array", []string{"latest", `["1", [2, true]]`}, []any{"latest", []any{"1", []any{"0x2", true}}}, false},
 		{"eth_eastimateGas", []string{`{"from": "1","to": "2"}`, "latest"}, []any{map[string]any{"from": "1", "to": "2"}, "latest"}, false},
 		{"debug_traceTransaction", []string{"0x82c6040b89e79d136af7368f993c8fa5856d690be8bba5533ff807218f0d7292", `{"tracer": "callTracer"}`}, []any{"0x82c6040b89e79d136af7368f993c8fa5856d690be8bba5533ff807218f0d7292", map[string]any{"tracer": "callTracer"}}, false},
+		{"array", []string{"latest", `["1", [2, true]]`}, []any{"latest", []any{"1", []any{float64(2), true}}}, false},
+		{"object", []string{`{"key": {"key": "value"}}`}, []any{map[string]any{"key": map[string]any{"key": "value"}}}, false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

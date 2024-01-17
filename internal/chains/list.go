@@ -3,20 +3,20 @@ package chains
 var Buintin = []*Chain{
 	local,
 	eth,
-	ethGoerli,
 	ethSepolia,
 	ethHolesky,
 	arbitrum,
-	arbitrumGoerli,
+	arbitrumSepolia,
 	opMainnet,
-	opGoerli,
+	opSepolia,
 	bscMainnet,
 	bscTestnet,
 	polygon,
 	polygonMubai,
 	base,
-	baseGoerli,
+	baseSepolia,
 	metis,
+	metisSepolia,
 }
 
 var local = &Chain{
@@ -31,14 +31,6 @@ var eth = &Chain{
 	Endpoint: "https://eth.llamarpc.com",
 	Explorer: "https://api.etherscan.io/api",
 	Alias:    []string{"eth-mainnet", "mainnet"},
-}
-
-var ethGoerli = &Chain{
-	Name:     "goerli",
-	Id:       5,
-	Endpoint: "https://ethereum-goerli.publicnode.com",
-	Explorer: "https://api-goerli.etherscan.io/api",
-	Alias:    []string{"eth-goerli"},
 }
 
 var ethSepolia = &Chain{
@@ -65,14 +57,14 @@ var arbitrum = &Chain{
 	Alias:    []string{"arbi", "arbitrum-one"},
 }
 
-var arbitrumGoerli = &Chain{
-	Name:     "arbitrum-goerli",
-	Id:       421613,
-	Endpoint: "https://goerli-rollup.arbitrum.io/rpc",
-	Explorer: "https://api-goerli.arbiscan.io/api",
-	Alias:    []string{"arbi-goerli"},
+var arbitrumSepolia = &Chain{
+	Name:     "arbitrum-sepolia",
+	Id:       421614,
+	Endpoint: "https://sepolia-rollup.arbitrum.io/rpc",
+	Explorer: "https://api-sepolia.arbiscan.io/api",
 }
 
+// https://docs.optimism.io/chain/networks
 var opMainnet = &Chain{
 	Name:     "op",
 	Id:       10,
@@ -81,11 +73,11 @@ var opMainnet = &Chain{
 	Alias:    []string{"optimistic"},
 }
 
-var opGoerli = &Chain{
-	Name:     "op-goerli",
-	Id:       420,
-	Endpoint: "https://goerli.optimism.io",
-	Explorer: "https://api-goerli-optimism.etherscan.io/api",
+var opSepolia = &Chain{
+	Name:     "op-sepolia",
+	Id:       11155420,
+	Endpoint: "https://sepolia.optimism.io",
+	Explorer: "https://api-sepolia-optimism.etherscan.io/api",
 }
 
 var bscMainnet = &Chain{
@@ -117,6 +109,7 @@ var polygonMubai = &Chain{
 	Explorer: "https://api-testnet.polygonscan.com/api",
 }
 
+// https://docs.base.org/network-information/
 var base = &Chain{
 	Name:     "base",
 	Id:       8453,
@@ -124,11 +117,11 @@ var base = &Chain{
 	Explorer: "https://api.basescan.org/api",
 }
 
-var baseGoerli = &Chain{
-	Name:     "base-goerli",
-	Id:       84531,
-	Endpoint: "https://goerli.base.org",
-	Explorer: "https://api-goerli.basescan.org/api",
+var baseSepolia = &Chain{
+	Name:     "base-sepolia",
+	Id:       84532,
+	Endpoint: "https://sepolia.base.org",
+	Explorer: "https://api-sepolia.basescan.org/api",
 }
 
 var metis = &Chain{
@@ -137,4 +130,11 @@ var metis = &Chain{
 	Endpoint: "https://andromeda.metis.io",
 	Explorer: "https://api.routescan.io/v2/network/mainnet/evm/1088/etherscan/api",
 	Alias:    []string{"andromeda"},
+}
+
+var metisSepolia = &Chain{
+	Name:     "metis-sepolia",
+	Id:       59901,
+	Endpoint: "https://sepolia.rpc.metisdevops.link",
+	Explorer: "https://sepolia.explorer.metisdevops.link/api",
 }

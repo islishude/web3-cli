@@ -38,10 +38,14 @@ func TestExplorer(t *testing.T) {
 		"arbitrum": "0x1a3b50Bd09594f96dDC192396CE41256EBe0726e",
 		// https://goerli.arbiscan.io/contractsVerified
 		"arbitrum-goerli": "0x1d6032b5e4044d1F870D65f56C067d3D79CbE35d",
+		// https://sepolia.arbiscan.io/contractsVerified
+		"arbitrum-sepolia": "0x93625761A4F4aEee36B06053989095E6EBb1aE08",
 		// https://optimistic.etherscan.io/contractsVerified
 		"op": "0xb54b6262407DB03Be70B6e697DE8F880c94a1461",
 		// https://goerli-optimism.etherscan.io/contractsVerified
 		"op-goerli": "0x98108048528e45f621ad024a1a36f572fcbc64cb",
+		// https://sepolia-optimism.etherscan.io/contractsVerified
+		"op-sepolia": "0xa44040fe7dc1ef251955e922bce6e90277167723",
 		// https://bscscan.com/contractsVerified
 		"bsc": "0xFf179bea631ef161aACe1E0764e7587c0541a566",
 		// https://testnet.bscscan.com/contractsVerified
@@ -54,10 +58,14 @@ func TestExplorer(t *testing.T) {
 		"base": "0x7485d64788a1e8609199ff1d06f7075c56f9f22d",
 		// https://goerli.basescan.org/contractsVerified
 		"base-goerli": "0x87f0E0922207C3F1b88df4a78b8e3bd83C7C7A1F",
+		// https://sepolia.basescan.org/contractsVerified
+		"base-sepoli": "0xe953c66ff9e959063af055332dbc4720c615150d",
 		// https://explorer.metis.io/contractsverified
 		"metis": "0xEA32A96608495e54156Ae48931A7c20f0dcc1a21",
 		// https://goerli.explorer.metisdevops.link/verified-contracts
 		"metis-goerli": "0xfAf6E5c9463334D154f39596764493576187a5d2",
+		// https://sepolia.explorer.metisdevops.link/verified-contracts
+		"metis-sepolia": "0x0BA17BD532f84Ecf7896Bd4FE7c1de21c62660B9",
 	}
 
 	var validIt = func(item *Chain) error {

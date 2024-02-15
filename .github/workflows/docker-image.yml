@@ -37,7 +37,7 @@ jobs:
         id: docker-meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/islishude/web3-cli
+          images: ghcr.io/${{ github.action_repository }}
       - name: Build and push
         uses: docker/build-push-action@v5
         id: docker-build

@@ -24,7 +24,7 @@ type EthCallMsg struct {
 func ContractCall(ctx *cli.Context, rpcClient *rpc.Client, chain *chains.Chain, logger io.Writer) (err error) {
 	callMsg := EthCallMsg{To: ctx.String(EthCallToFlag.Name)}
 
-	if v := ctx.String(EthCallFromFlag.Name); v != "'" {
+	if v := ctx.String(EthCallFromFlag.Name); v != "" {
 		callMsg.From = v
 	}
 

@@ -39,7 +39,7 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
       - name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         id: docker-build
         timeout-minutes: 10
         with:

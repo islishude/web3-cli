@@ -39,14 +39,24 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.GHCR_REPO }}
+
       - name: Build
         uses: docker/build-push-action@v6
         id: build
         with:
           pull: true
           context: .
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          provenance: false
+          sbom: false
+          annotations: ${{ steps.meta.outputs.annotations }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha,scope=buildkit-${{ matrix.os }}
+          cache-to: type=gha,mode=max,scope=buildkit-${{ matrix.os }}
           outputs: type=registry,"name=${{ env.GHCR_REPO }}",push-by-digest=true,name-canonical=true
 
       - name: Export digest

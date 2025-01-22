@@ -9,12 +9,19 @@ import (
 	"strings"
 )
 
-func ParseArgs(args []string) (params []any, err error) {
+func ParseArgs(args []string, useEthFormat bool) (params []any, err error) {
 	for _, v := range args {
 		switch {
 		case IsNumber(v):
 			if v, ok := new(big.Int).SetString(v, 10); ok {
-				params = append(params, "0x"+v.Text(16))
+				if useEthFormat {
+					params = append(params, "0x"+v.Text(16))
+				} else {
+					if !v.IsInt64() {
+						return nil, fmt.Errorf("number %s is too large", v.String())
+					}
+					params = append(params, v.Int64())
+				}
 				continue
 			}
 			fallthrough

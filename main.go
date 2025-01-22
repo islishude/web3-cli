@@ -27,6 +27,7 @@ func main() {
 		Flags: []cli.Flag{
 			ChainNameFlag,
 			RPCFlag,
+			NoTranformFlag,
 			ABINameFlag,
 			ABIPathFlag,
 			EthCallToFlag,

@@ -13,7 +13,7 @@ import (
 func JsonrpcCall(ctx *cli.Context, rpcClient *rpc.Client, logger io.Writer) error {
 	args := ctx.Args().Slice()
 	jsonrpcMethod := args[0]
-	jsonrpcParams, err := utils.ParseArgs(args[1:])
+	jsonrpcParams, err := utils.ParseArgs(args[1:], !ctx.Bool(NoTranformFlag.Name))
 	if err != nil {
 		return err
 	}

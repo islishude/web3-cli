@@ -24,6 +24,12 @@ var (
 		Usage:   "custom rpc endpoint to connect",
 	}
 
+	NoTranformFlag = &cli.BoolFlag{
+		Name:    "no-tranform",
+		Aliases: []string{"n"},
+		Usage:   "Use eth json rpc mode(e.g. tranform number to hex)",
+	}
+
 	ABINameFlag = &cli.StringFlag{
 		Name:     "abi-name",
 		Usage:    "if you want to do a contract call, you should provide this",

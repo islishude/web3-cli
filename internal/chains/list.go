@@ -36,7 +36,7 @@ var eth = &Chain{
 var ethSepolia = &Chain{
 	Name:     "sepolia",
 	Id:       11155111,
-	Endpoint: "https://rpc.sepolia.org",
+	Endpoint: "https://eth-sepolia.public.blastapi.io",
 	Explorer: "https://api-sepolia.etherscan.io/api",
 	Alias:    []string{"eth-sepolia"},
 }

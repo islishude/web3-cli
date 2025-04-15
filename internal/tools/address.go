@@ -53,7 +53,7 @@ func NewRandomAddress(prefix, suffix string, thread int) AddressInfo {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	for i := 0; i < thread; i++ {
+	for range thread {
 		go func() {
 			var pt = true
 			var st = true

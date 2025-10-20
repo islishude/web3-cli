@@ -3,7 +3,7 @@ module github.com/islishude/web3-cli
 go 1.24.0
 
 require (
-	github.com/ethereum/go-ethereum v1.16.4
+	github.com/ethereum/go-ethereum v1.16.5
 	github.com/urfave/cli/v2 v2.27.7
 )
 
